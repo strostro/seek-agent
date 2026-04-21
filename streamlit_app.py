@@ -455,7 +455,7 @@ def hbar_chart(df, x_col, y_col, color=ACCENT, height=300):
             tickfont=dict(size=13, color=TEXT_1, family="Inter"),
             fixedrange=True,
         ),
-        bargap=0.0,
+        bargap=0.4,
     )
     return fig
 
@@ -940,7 +940,7 @@ with st.container(border=True):
             y=role_order,
             orientation="h",
             marker=dict(color=TRACK, line=dict(width=0)),
-            width=0.5,
+            #width=0.5,
             showlegend=False,
             hoverinfo="skip",
             offsetgroup="track",
@@ -972,7 +972,7 @@ with st.container(border=True):
                     line=dict(width=0),
                 ),
                 hovertemplate=hover_tpl,
-                width=0.5,
+                #width=0.5,
                 offsetgroup="bars",
                 showlegend=not redundant,  # hide redundant subtypes from the legend
             ))
