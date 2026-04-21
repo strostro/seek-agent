@@ -340,8 +340,11 @@ st.markdown(f"""
 
 @st.cache_data(ttl=3600)
 def load_data():
-    with open("./rsa_key.pem", "rb") as f:
-        private_key = serialization.load_pem_private_key(f.read(), password=None)
+    private_key_str = st.secrets["snowflake"]["private_key"]
+    private_key = serialization.load_pem_private_key(
+        private_key_str.encode(),
+        password=None
+    )
     pkb = private_key.private_bytes(
         encoding=serialization.Encoding.DER,
         format=serialization.PrivateFormat.PKCS8,
