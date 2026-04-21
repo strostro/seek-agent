@@ -398,7 +398,6 @@ def hbar_chart(df, x_col, y_col, color=ACCENT, height=300):
         max_val = 1  # guard against division by zero
 
     track_len = max_val  # track length = reference 100% for all rows
-    track_len = max_val
     x_range = track_len * 1.18  # 18% padding on right for labels
 
     fig = go.Figure()
@@ -474,10 +473,6 @@ def card_header(title, subtitle, tag=None, tag_accent=False):
     """, unsafe_allow_html=True)
 
 # ============================================================
-# Sidebar — dark theme + session state
-# ============================================================
-
-# ============================================================
 # Filter session state
 # ============================================================
 
@@ -508,6 +503,10 @@ def on_role_change():
     valid_subtypes = role_to_subtypes.get(new_role, [])
     if st.session_state["flt_subtype"] not in valid_subtypes:
         st.session_state["flt_subtype"] = "All subtypes"
+
+# ============================================================
+# Sidebar — dark theme + session state
+# ============================================================
 
 with st.sidebar:
     st.markdown("""
@@ -910,7 +909,7 @@ def is_redundant_subtype(subtype):
     """Return True if the subtype maps 1-to-1 with its parent role."""
     if subtype_role_map.get(subtype, 0) != 1:
         return False
-        # Look up which role owns this subtype
+    # Look up which role owns this subtype
     its_role = role_subtype_counts[
         role_subtype_counts["role_subtype"] == subtype
     ]["role_standardised"].iloc[0]
@@ -934,48 +933,62 @@ with st.container(border=True):
 
         fig_role = go.Figure()
 
-        # Grey full-width track (independent offsetgroup, not part of the stack)
+        # Grey full-width track (same offsetgroup as bars so they share row position)
         fig_role.add_trace(go.Bar(
             x=[track_len] * len(role_order),
             y=role_order,
             orientation="h",
             marker=dict(color=TRACK, line=dict(width=0)),
-            #width=0.5,
+            width=0.5,
             showlegend=False,
             hoverinfo="skip",
             offsetgroup="bars",
         ))
 
-        # One coloured trace per subtype, all in 'bars' offsetgroup so they stack
+        # Build cumulative sums per role so we can simulate stacking in overlay mode
+        # (overlay is needed so bars align with the grey track)
+        cumulative_df = pd.DataFrame({"role_standardised": role_order})
         for subtype in all_subtypes:
-            df_sub = (
+            sub_data = (
                 role_subtype_counts[role_subtype_counts["role_subtype"] == subtype]
-                .set_index("role_standardised")
-                .reindex(role_order).fillna(0).reset_index()
+                .set_index("role_standardised")["count"]
+                .reindex(role_order).fillna(0)
             )
-            redundant = is_redundant_subtype(subtype)
+            cumulative_df[subtype] = sub_data.values
 
-            # Hover text: redundant subtypes show count only
+        # Draw subtypes from largest cumulative to smallest so smaller segments
+        # are painted on top and remain visible
+        running_total = cumulative_df[all_subtypes].sum(axis=1).values.copy()
+
+        traces_to_add = []
+        for subtype in reversed(all_subtypes):
+            redundant = is_redundant_subtype(subtype)
             if redundant:
                 hover_tpl = "<b>%{y}</b><br>%{x} postings<extra></extra>"
             else:
                 hover_tpl = ("<b>%{y}</b><br>" + subtype +
-                             ": %{x}<extra></extra>")
+                             ": %{customdata}<extra></extra>")
 
-            fig_role.add_trace(go.Bar(
+            traces_to_add.append(go.Bar(
                 name=subtype,
-                x=df_sub["count"],
-                y=df_sub["role_standardised"],
+                x=running_total.copy(),
+                y=role_order,
+                customdata=cumulative_df[subtype].values,
                 orientation="h",
                 marker=dict(
                     color=SUBTYPE_COLORS.get(subtype, "#CBD5E1"),
                     line=dict(width=0),
                 ),
+                width=0.5,
                 hovertemplate=hover_tpl,
-                #width=0.5,
                 offsetgroup="bars",
-                showlegend=not redundant,  # hide redundant subtypes from the legend
+                showlegend=not redundant,
             ))
+            running_total -= cumulative_df[subtype].values
+
+        # Re-add traces in original (alphabetical) order so the legend is alphabetical
+        for trace in reversed(traces_to_add):
+            fig_role.add_trace(trace)
 
         # Count labels pinned to a fixed right position
         fig_role.add_trace(go.Scatter(
@@ -1138,7 +1151,6 @@ with col_map:
             # Labels only for the top 6 regions to avoid clutter
             region_map_sorted = region_map.sort_values("count", ascending=False)
             top_labels = region_map_sorted.head(6).copy()
-            other_points = region_map_sorted.iloc[6:].copy()
 
             fig_map = go.Figure()
 
@@ -1224,7 +1236,7 @@ with col_city:
         )
 
         if n_cities > 0:
-            # Both columns use the same plotly height so the containers align.
+            # Both columns use the same plotly height so the containers align
             st.plotly_chart(
                 hbar_chart(city_counts, "count", "city",
                            ACCENT, height=MAP_HEIGHT),
