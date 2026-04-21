@@ -473,6 +473,15 @@ def card_header(title, subtitle, tag=None, tag_accent=False):
         </div>
     """, unsafe_allow_html=True)
 
+def section_header(title, subtitle=""):
+    sub_html = f'<div style="font-size:12px;color:{TEXT_3};margin-bottom:12px">{subtitle}</div>' if subtitle else ""
+    st.markdown(
+        f'<div style="margin-top:15px;margin-bottom:4px;font-size:17px;font-weight:700;'
+        f'color:{TEXT_1};letter-spacing:-0.01em">{title}</div>'
+        f'{sub_html}',
+        unsafe_allow_html=True
+    )
+
 # ============================================================
 # Sidebar — dark theme + session state
 # ============================================================
@@ -628,6 +637,7 @@ with col_date:
 # ============================================================
 # 1. KPI cards
 # ============================================================
+section_header("Overview", "Who is hiring and what kind of organisations")
 
 total_now = len(filtered)
 companies_now = filtered["company"].nunique()
@@ -797,7 +807,7 @@ with col_ind:
         card_header(
             "Industry breakdown",
             "Top industry verticals hiring",
-            tag=f"{n_ind} shown",
+            tag=f"Top {n_ind}",
         )
 
         if n_ind > 0:
@@ -812,6 +822,8 @@ with col_ind:
 # ============================================================
 # 3. 14-day posting trend
 # ============================================================
+
+section_header("Posting Trend", "Daily postings over the last 14 days")
 
 if df_jobs["posted_date"].notna().any():
     max_date = df_jobs["posted_date"].max()
@@ -829,8 +841,8 @@ if df_jobs["posted_date"].notna().any():
 
     with st.container(border=True):
         card_header(
-            "Posting volume trend",
-            f"Daily postings · avg {daily_avg}/day over 14 days",
+            "",
+            f"",
             tag="14D",
             tag_accent=True,
         )
@@ -881,6 +893,7 @@ if df_jobs["posted_date"].notna().any():
 # ============================================================
 # 4. Role distribution — stacked hbar with grey track
 # ============================================================
+section_header("Role Distribution", "Breakdown by role family and specialization")
 
 role_subtype_counts = (
     filtered
@@ -918,8 +931,8 @@ def is_redundant_subtype(subtype):
 
 with st.container(border=True):
     card_header(
-        "Role distribution",
-        "Breakdown by role family and specialization",
+        "",
+        "",
         tag=f"{n_roles} families",
     )
 
@@ -1013,6 +1026,8 @@ with st.container(border=True):
 # 5. Top skills — programming / tools / concepts
 # ============================================================
 
+section_header("Top Skills", f"Most mentioned across all postings · based on {len(filtered)} jobs")
+
 skill_counts = filtered_skills.groupby("skill")["job_id"].count().reset_index()
 skill_counts.columns = ["skill", "count"]
 skill_counts = skill_counts.merge(
@@ -1038,7 +1053,7 @@ for i, (cat_key, cat_label, cat_sub, cat_color) in enumerate(categories):
                 cat_df["skill"].str.replace("_", " ").str.title()
             )
 
-            card_header(cat_label, cat_sub, tag=f"TOP {n_cat}")
+            card_header(cat_label, f"{cat_sub}", tag=f"TOP {n_cat}")
 
             if n_cat > 0:
                 st.plotly_chart(
@@ -1057,6 +1072,7 @@ for i, (cat_key, cat_label, cat_sub, cat_color) in enumerate(categories):
 # ============================================================
 # 6. Geographic distribution — map + city bar
 # ============================================================
+section_header("Geographic Distribution", "Where data jobs are located across New Zealand")
 
 REGION_COORDS = {
     "Auckland":           (-36.8485, 174.7633),
@@ -1107,8 +1123,8 @@ col_map, col_city = st.columns([3, 2], gap="medium")
 with col_map:
     with st.container(border=True):
         card_header(
-            "Geographic distribution",
-            "Postings across New Zealand regions",
+            "Distribution by Region",
+            "",
             tag=f"{len(region_map)} regions",
             tag_accent=True,
         )
