@@ -934,17 +934,7 @@ with st.container(border=True):
 
         fig_role = go.Figure()
 
-        # Grey full-width track (independent offsetgroup, not part of the stack)
-        fig_role.add_trace(go.Bar(
-            x=[track_len] * len(role_order),
-            y=role_order,
-            orientation="h",
-            marker=dict(color=TRACK, line=dict(width=0)),
-            width=0.5,
-            showlegend=False,
-            hoverinfo="skip",
-            offsetgroup="track",
-        ))
+ 
 
         # One coloured trace per subtype, all in 'bars' offsetgroup so they stack
         for subtype in all_subtypes:
@@ -973,7 +963,7 @@ with st.container(border=True):
                 ),
                 hovertemplate=hover_tpl,
                 width=0.5,
-                offsetgroup="bars",
+                #offsetgroup="bars",
                 showlegend=not redundant,  # hide redundant subtypes from the legend
             ))
 
