@@ -1,0 +1,124 @@
+skill,pattern,category,tag,display_name
+python,\bpython\b,programming,non_ai,Python
+sql,\bsql\b,programming,non_ai,SQL
+r,\br\b|\brstudio\b,programming,non_ai,R
+scala,\bscala\b,programming,non_ai,Scala
+java,\bjava\b,programming,non_ai,Java
+javascript,\bjavascript\b|\bjs\b,programming,non_ai,JavaScript
+bash,\bbash\b,programming,non_ai,Bash
+sas,\bsas\b,programming,non_ai,SAS
+matlab,\bmatlab\b,programming,non_ai,MATLAB
+julia,\bjulia\b,programming,non_ai,Julia
+go,golang|go language,programming,non_ai,Go
+power_bi,power\s?bi,tool,non_ai,Power BI
+tableau,\btableau\b,tool,non_ai,Tableau
+looker,\blooker\b,tool,non_ai,Looker
+qlik,\bqlik\b,tool,non_ai,Qlik
+microstrategy,\bmicrostrategy\b,tool,non_ai,MicroStrategy
+excel,\bexcel\b,tool,non_ai,Excel
+aws,\baws\b|amazon web services,tool,non_ai,AWS
+azure,\bazure\b,tool,non_ai,Azure
+gcp,\bgcp\b|google cloud,tool,non_ai,GCP
+spark,\bspark\b,tool,non_ai,Spark
+hadoop,\bhadoop\b,tool,non_ai,Hadoop
+kafka,\bkafka\b,tool,non_ai,Kafka
+airflow,\bairflow\b,tool,non_ai,Airflow
+dbt,\bdbt\b,tool,non_ai,dbt
+docker,\bdocker\b,tool,non_ai,Docker
+kubernetes,\bkubernetes\b,tool,non_ai,Kubernetes
+git,\bgit\b,tool,non_ai,Git
+linux,\blinux\b,tool,non_ai,Linux
+databricks,\bdatabricks\b,tool,non_ai,Databricks
+snowflake,\bsnowflake\b,tool,non_ai,Snowflake
+bigquery,\bbigquery\b,tool,non_ai,BigQuery
+redshift,\bredshift\b,tool,non_ai,Redshift
+postgresql,\bpostgresql\b,tool,non_ai,PostgreSQL
+mysql,\bmysql\b,tool,non_ai,MySQL
+tensorflow,\btensorflow\b,tool,ai,TensorFlow
+pytorch,\bpytorch\b,tool,ai,PyTorch
+keras,\bkeras\b,tool,ai,Keras
+pinecone,\bpinecone\b,tool,ai,Pinecone
+weaviate,\bweaviate\b,tool,ai,Weaviate
+chromadb,\bchromadb\b,tool,ai,ChromaDB
+milvus,\bmilvus\b,tool,ai,Milvus
+mongodb,\bmongodb\b,tool,ai,MongoDB
+huggingface,\bhugging\s?face\b,tool,ai,Hugging Face
+langchain,\blangchain\b,tool,ai,LangChain
+llamaindex,\bllamaindex\b,tool,ai,LlamaIndex
+openai_api,openai api|openai\.com,tool,ai,OpenAI API
+anthropic,\banthropic\b,tool,ai,Anthropic
+vertex_ai,vertex ai,tool,ai,Vertex AI
+bedrock,amazon bedrock,tool,ai,Amazon Bedrock
+mcp,mcp|model context protocol,tool,ai,MCP
+machine_learning,machine learning,concept,ai,Machine Learning
+deep_learning,deep learning,concept,ai,Deep Learning
+llm,\bllm\b|large language model,concept,ai,LLM
+generative_ai,generative ai|gen.?ai,concept,ai,Generative AI
+prompt_engineering,prompt engineering,concept,ai,Prompt Engineering
+rag,retrieval augmented generation|rag\b,concept,ai,RAG
+embedding,embedding model|text embedding,concept,ai,Embeddings
+transformer,transformer model,concept,ai,Transformer
+fine_tuning,fine[- ]?tuning,concept,ai,Fine-tuning
+pandas,\bpandas\b,concept,non_ai,Pandas
+numpy,\bnumpy\b,concept,non_ai,NumPy
+matplotlib,\bmatplotlib\b,concept,non_ai,Matplotlib
+seaborn,\bseaborn\b,concept,non_ai,Seaborn
+scikit_learn,scikit[- ]?learn|\bsklearn\b,concept,non_ai,scikit-learn
+statistics,\bstatistics\b,concept,non_ai,Statistics
+forecasting,forecasting,concept,non_ai,Forecasting
+time_series,time series,concept,non_ai,Time Series
+a_b_testing,a/?b testing|ab testing,concept,non_ai,A/B Testing
+regression_models,linear regression|logistic regression|polynomial regression|ridge regression|lasso regression|elastic net|glm\b|support vector regression|svr\b|random forest regression|xgboost regression|lightgbm regression|catboost regression,concept,ai,Regression Models
+pyspark,\bpyspark\b,tool,non_ai,PySpark
+power_query,power query|m language|\bm\b(?=.*power),programming,non_ai,Power Query
+dax,\bdax\b,programming,non_ai,DAX
+data_analysis,data\s+anal(?:ysis|ytics)\b,concept,non_ai,Data Analysis
+data_modeling,data\s+model(?:l?ing)?,concept,non_ai,Data Modelling
+etl_elt,\betl\b|\belt\b|extract.*transform.*load|extract.*load.*transform,concept,non_ai,ETL / ELT
+data_warehouse,data\s+ware\s*house,concept,non_ai,Data Warehousing
+data_lake,data\s+lake(?!\s*house),concept,non_ai,Data Lake
+data_governance,data\s+governance,concept,non_ai,Data Governance
+data_visualization,data\s+visuali[sz]ation,concept,non_ai,Data Visualisation
+agile,\bagile\b,concept,non_ai,Agile
+scrum,\bscrum\b,concept,non_ai,Scrum
+devops,\bdevops\b,concept,non_ai,DevOps
+stakeholder_management,stakeholder\s+management,concept,non_ai,Stakeholder Management
+product_management,product\s+management\b,concept,non_ai,Product Management
+typescript,\btypescript\b,programming,non_ai,TypeScript
+php,\bphp\b,programming,non_ai,PHP
+swift,\bswift\b,programming,non_ai,Swift
+terraform,\bterraform\b,tool,non_ai,Terraform
+github_actions,github\s+actions,tool,non_ai,GitHub Actions
+ci_cd,\bci/?cd\b|continuous integration|continuous delivery,tool,non_ai,CI/CD
+sql_server,\bsql\s+server\b|\bt-sql\b|\btsql\b,tool,non_ai,SQL Server
+azure_data_factory,azure\s+data\s+factory|\badf\b,tool,non_ai,Azure Data Factory
+microsoft_fabric,microsoft\s+fabric,tool,non_ai,Microsoft Fabric
+fivetran,\bfivetran\b,tool,non_ai,Fivetran
+ssis,\bssis\b,tool,non_ai,SSIS
+react,\breact(?:\.js)?\b,tool,non_ai,React
+node_js,\bnode(?:\.js)?\b,tool,non_ai,Node.js
+rest_api,\brest(?:ful)?\s+api\b,tool,non_ai,REST API
+copilot,\bcopilot\b,tool,ai,Copilot
+azure_openai,azure\s+openai,tool,ai,Azure OpenAI
+data_quality,data\s+quality,concept,non_ai,Data Quality
+data_migration,data\s+migrat(?:ion|e),concept,non_ai,Data Migration
+data_integration,data\s+integrat(?:ion|e),concept,non_ai,Data Integration
+data_architecture,data\s+architecture,concept,non_ai,Data Architecture
+cloud_architecture,cloud\s+architecture|cloud[- ]?native,concept,non_ai,Cloud Architecture
+mlops,\bmlops\b,concept,ai,MLOps
+data_pipeline,data\s+pipeline,concept,non_ai,Data Pipeline
+predictive_modelling,predictive\s+model(?:l?ing)?|predictive\s+analytics,concept,non_ai,Predictive Modelling
+microservices,\bmicroservices?\b,concept,non_ai,Microservices
+data_security,data\s+security|data\s+privacy|data\s+compliance,concept,non_ai,Data Security
+jira,\bjira\b,tool,non_ai,Jira
+salesforce,\bsalesforce\b,tool,non_ai,Salesforce
+google_analytics,google analytics|\bga4\b,tool,non_ai,Google Analytics
+azure_devops,azure devops,tool,non_ai,Azure DevOps
+sap,\bsap\b,tool,non_ai,SAP
+oracle,\boracle\b(?! cloud),tool,non_ai,Oracle
+jenkins,\bjenkins\b,tool,non_ai,Jenkins
+confluence,\bconfluence\b,tool,non_ai,Confluence
+sharepoint,\bsharepoint\b,tool,non_ai,SharePoint
+matillion,\bmatillion\b,tool,non_ai,Matillion
+power_automate,power automate,tool,non_ai,Power Automate
+kotlin,\bkotlin\b,programming,non_ai,Kotlin
