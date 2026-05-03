@@ -1051,7 +1051,10 @@ for i, (cat_key, cat_label, cat_sub, cat_color) in enumerate(categories):
                 .nlargest(10, "count").copy()
             )
             n_cat = len(cat_df)
-            cat_df["skill_display"] = (
+            cat_df = cat_df.merge(
+                skill_dict[["skill", "display_name"]], on="skill", how="left"
+            )
+            cat_df["skill_display"] = cat_df["display_name"].fillna(
                 cat_df["skill"].str.replace("_", " ").str.title()
             )
 
@@ -1070,7 +1073,7 @@ for i, (cat_key, cat_label, cat_sub, cat_color) in enumerate(categories):
                     f"padding:40px 0;font-size:13px'>No data</div>",
                     unsafe_allow_html=True,
                 )
-
+                
 # ============================================================
 # 6. Geographic distribution — map + city bar
 # ============================================================
