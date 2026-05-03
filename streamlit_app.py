@@ -830,8 +830,11 @@ section_header("Posting Trend", "Daily postings over the last 14 days")
 
 if df_jobs["posted_date"].notna().any():
     max_date = df_jobs["posted_date"].max()
-    min_date = max_date - timedelta(days=13)
-    all_dates = pd.date_range(start=min_date, end=max_date, freq="D")
+    # Align to the most recent Sunday, then go back 13 days to the previous Monday
+    days_since_monday = max_date.weekday()  # Mon=0, Sun=6
+    last_sunday = max_date + timedelta(days=(6 - days_since_monday))
+    min_date = last_sunday - timedelta(days=13)
+    all_dates = pd.date_range(start=min_date, end=last_sunday, freq="D")
     date_df = pd.DataFrame({"posted_date": all_dates})
 
     daily = filtered.groupby("posted_date").size().reset_index(name="count")
@@ -1073,7 +1076,7 @@ for i, (cat_key, cat_label, cat_sub, cat_color) in enumerate(categories):
                     f"padding:40px 0;font-size:13px'>No data</div>",
                     unsafe_allow_html=True,
                 )
-                
+
 # ============================================================
 # 6. Geographic distribution — map + city bar
 # ============================================================
