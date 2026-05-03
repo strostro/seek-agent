@@ -569,14 +569,17 @@ with st.sidebar:
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    if st.button("Reset filters"):
-        st.session_state["flt_role"] = "All roles"
-        st.session_state["flt_subtype"] = "All subtypes"
-        st.session_state["flt_region"] = "All regions"
-        st.session_state["flt_type"] = "All types"
-        st.rerun()
+    def reset_filters():
+        for key, val in [
+            ("flt_role", "All roles"),
+            ("flt_subtype", "All subtypes"),
+            ("flt_region", "All regions"),
+            ("flt_type", "All types"),
+    ]:
+            st.session_state[key] = val
 
-    st.markdown("---")
+    st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
+    st.button("↺  Reset filters", on_click=reset_filters, use_container_width=True)
 
     st.markdown("""
         <div class="sb-section-label">About</div>
@@ -960,10 +963,9 @@ with st.container(border=True):
 
             # Hover text: redundant subtypes show count only
             if redundant:
-                hover_tpl = "<b>%{y}</b><br>%{x} postings<extra></extra>"
+               hover_tpl = "%{x} postings<extra></extra>"
             else:
-                hover_tpl = ("<b>%{y}</b><br>" + subtype +
-                             ": %{x}<extra></extra>")
+               hover_tpl = f"{subtype}: %{{x}}<extra></extra>"
 
             fig_role.add_trace(go.Bar(
                 name=subtype,
