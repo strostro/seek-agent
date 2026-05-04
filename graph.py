@@ -14,14 +14,9 @@ def scrape_node(state: PipelineState) -> PipelineState:
     print("Starting scrape...")
     df = pull_seek_data()
     print(f"Scraped {len(df)} jobs")
+    save_raw_jobs(df)
+    print("Raw data saved to Snowflake")
     return {**state, "scraped_df": df, "status": "scraped"}
-
-
-def save_raw_node(state: PipelineState) -> PipelineState:
-    print("Saving raw data to Snowflake...")
-    save_raw_jobs(state["scraped_df"])
-    return {**state, "status": "raw_saved"}
-
 
 
 def clean_node(state: PipelineState) -> PipelineState:
@@ -39,30 +34,35 @@ def clean_node(state: PipelineState) -> PipelineState:
         axis=1,
     )
 
-    print("Classifying companies...")
-    df = run_company_classification(df)
-
-    print("Classifying roles...")
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    df = apply_role_classification(df, client)
-
     print(f"Cleaning done: {len(df)} jobs")
     return {**state, "clean_df": df, "status": "cleaned"}
 
-def save_clean_node(state: PipelineState) -> PipelineState:
+
+def classify_node(state: PipelineState) -> PipelineState:
+    print("Classifying...")
+    df = state["clean_df"].copy()
+
+    print("Classifying companies (ReAct agent)...")
+    df = run_company_classification(df)
+
+    print("Classifying roles (LLM)...")
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    df = apply_role_classification(df, client)
+
     print("Saving clean data to Snowflake...")
-    save_clean_jobs(state["clean_df"])
-    return {**state, "status": "saved"}
+    save_clean_jobs(df)
+    print(f"Done: {len(df)} jobs saved")
+
+    return {**state, "clean_df": df, "status": "saved"}
+
 
 def build_graph():
     graph = StateGraph(PipelineState)
     graph.add_node("scrape", scrape_node)
-    graph.add_node("save_raw", save_raw_node)
     graph.add_node("clean", clean_node)
-    graph.add_node("save_clean", save_clean_node)
+    graph.add_node("classify", classify_node)
     graph.set_entry_point("scrape")
-    graph.add_edge("scrape", "save_raw")
-    graph.add_edge("save_raw", "clean")
-    graph.add_edge("clean", "save_clean")
-    graph.add_edge("save_clean", END)
+    graph.add_edge("scrape", "clean")
+    graph.add_edge("clean", "classify")
+    graph.add_edge("classify", END)
     return graph.compile()
