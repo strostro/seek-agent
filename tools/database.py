@@ -88,14 +88,14 @@ def save_raw_jobs(df: pd.DataFrame):
                 clean_val(row["scrape_time_utc"]),
                 clean_val(row["title"]),
                 clean_val(row["company"]),
-                clean_val(row["location"]),
+                clean_val(row.get("location")),
                 clean_val(row["classification"]),
                 clean_val(row["work_type"]),
-                clean_val(row["salary"]),
-                clean_val(row["posted_raw"]),
+                clean_val(row.get("salary")),
+                clean_val(row.get("posted_raw")),
                 str(row["posted_date"]) if clean_val(row.get("posted_date")) else None,
                 clean_val(row["description"]),
-                clean_val(row["url"]),
+                clean_val(row.get("url")),
                 clean_val(row["job_id"])
             ))
             if cursor.rowcount > 0:
@@ -123,20 +123,16 @@ def save_clean_jobs(df: pd.DataFrame):
             scrape_time_utc VARCHAR,
             title VARCHAR,
             company VARCHAR,
-            location VARCHAR,
             city VARCHAR,
             region_standardised VARCHAR,
             island VARCHAR,
             classification VARCHAR,
             work_type VARCHAR,
-            salary VARCHAR,
             posted_date DATE,
-            description TEXT,
-            url VARCHAR,
             skills_dict VARIANT,
-            company_industry VARCHAR,
-            company_type VARCHAR,
-            company_size VARCHAR,
+            industry VARCHAR,
+            type VARCHAR,
+            size VARCHAR,
             role_standardised VARCHAR,
             role_subtype VARCHAR
         )
@@ -152,14 +148,13 @@ def save_clean_jobs(df: pd.DataFrame):
             cursor.execute("""
                 INSERT INTO CLEAN_JOBS (
                     job_id, source_keyword, scrape_time_utc, title,
-                    company, location, city, region_standardised, island,
-                    classification, work_type, salary, posted_date,
-                    description, url, skills_dict,
-                    company_industry, company_type, company_size,
+                    company, city, region_standardised, island,
+                    classification, work_type, posted_date,
+                    skills_dict, industry, type, size,
                     role_standardised, role_subtype
                 )
-                SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                       %s, %s, %s, %s, %s, %s, PARSE_JSON(%s),
+                SELECT %s, %s, %s, %s, %s, %s, %s, %s,
+                       %s, %s, %s, PARSE_JSON(%s),
                        %s, %s, %s, %s, %s
                 WHERE NOT EXISTS (
                     SELECT 1 FROM CLEAN_JOBS WHERE job_id = %s
@@ -170,16 +165,12 @@ def save_clean_jobs(df: pd.DataFrame):
                 clean_val(row["scrape_time_utc"]),
                 clean_val(row["title"]),
                 clean_val(row["company"]),
-                clean_val(row["location"]),
                 clean_val(row.get("city")),
                 clean_val(row.get("region_standardised")),
                 clean_val(row.get("island")),
                 clean_val(row["classification"]),
                 clean_val(row["work_type"]),
-                clean_val(row["salary"]),
                 str(row["posted_date"]) if clean_val(row.get("posted_date")) else None,
-                clean_val(row["description"]),
-                clean_val(row["url"]),
                 json.dumps(skills),
                 clean_val(row.get("industry")),
                 clean_val(row.get("type")),
